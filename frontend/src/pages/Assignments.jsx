@@ -98,7 +98,7 @@ export default function Assignments() {
                   )}
                   {a.fileUrl && (
                     <a
-                      href={`http://localhost:5000/${a.fileUrl}`}
+                      href={`https://localhost:5001/${a.fileUrl}`}
                       target="_blank"
                       rel="noreferrer noopener"   // prevents tab-napping attack
                       style={{ color: '#4f46e5', fontSize: '13px' }}
