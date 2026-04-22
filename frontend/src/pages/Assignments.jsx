@@ -23,6 +23,8 @@ export default function Assignments() {
 
   useEffect(() => { fetchAssignments(); }, []);
 
+  console.log(assignments);
+
   const handleUpload = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -78,18 +80,29 @@ export default function Assignments() {
           <p>No assignments yet.</p>
         ) : (
           <div style={styles.list}>
+            {/* REMOVE dangerouslySetInnerHTML entirely. */}
+            {/* React's default JSX rendering escapes all HTML — just use {variable}. */}
+
             {assignments.map(a => (
               <div key={a._id} style={styles.card}>
                 <div style={{ flex: 1 }}>
+                  {/* SECURE: React escapes this — <script> tags render as text, not code */}
                   <h4 style={{ margin: '0 0 4px' }}>{a.title}</h4>
                   <p style={styles.meta}>
                     By {a.uploadedBy?.name} ({a.uploadedBy?.role}) &nbsp;•&nbsp;
                     {new Date(a.createdAt).toLocaleDateString()}
                   </p>
-                  {a.description && <p style={{ margin: '4px 0', color:'#555' }}>{a.description}</p>}
+                  {/* SECURE: plain {variable} — never dangerouslySetInnerHTML */}
+                  {a.description && (
+                    <p style={{ margin: '4px 0', color: '#555' }}>{a.description}</p>
+                  )}
                   {a.fileUrl && (
-                    <a href={`http://localhost:5000/${a.fileUrl}`} target="_blank" rel="noreferrer"
-                      style={{ color:'#4f46e5', fontSize:'13px' }}>
+                    <a
+                      href={`http://localhost:5000/${a.fileUrl}`}
+                      target="_blank"
+                      rel="noreferrer noopener"   // prevents tab-napping attack
+                      style={{ color: '#4f46e5', fontSize: '13px' }}
+                    >
                       Download file
                     </a>
                   )}
